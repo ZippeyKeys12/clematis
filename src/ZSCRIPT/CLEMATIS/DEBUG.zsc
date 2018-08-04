@@ -1,19 +1,21 @@
-enum ZE_ErrorSeverity{
+enum Cl_EErrorSeverity{
     ERR_Info,
     ERR_Warning,
     ERR_Error,
     ERR_Fatal,
 }
 
-class ZDebug{
+class Cl_Debug{
     static
     clearscope
-    void Message(String Output, Name CVarName)
-    {if(CVar.FindCVar(CVarName).GetBool())console.printf(Output);}
+    void Message(String Output, Name CVarName){
+        if(CVar.FindCVar(CVarName).GetBool())
+            console.printf(Output);
+    }
 
     static
     clearscope
-    void Error(Name Owner, String Error, ZE_ErrorSeverity Severity){
+    void Error(Name Owner, String Error, Cl_EErrorSeverity Severity){
         switch(Severity){
             case ERR_Info:
                 Console.PrintF("%s INFO - %s", "["..Owner.."]", Error);

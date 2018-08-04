@@ -80,15 +80,15 @@ class Clematis abstract{
                     ..Failures+Successes.." Tests Run, "..Successes.." Tests Succeeded, "..Failures.." Test Failed".."\n");
     }
 
-    void It(Name TestCaseName, bool Condition, ZE_ErrorSeverity Severity)
+    void It(Name TestCaseName, bool Condition, Cl_EErrorSeverity Severity)
     {Results.Push(Cl_Result.Create(TestCaseName, Condition, Severity));}
 
     /////////////
     // Logging //
     /////////////
 
-    void Log(ZE_ErrorSeverity Severity, String Error, bool Verbose=false){
+    void Log(Cl_EErrorSeverity Severity, String Error, bool Verbose=false){
         if(!Verbose || Logging)
-            ZDebug.Error(GetClassName(), Error, Severity);
+            Cl_Debug.Error(GetClassName(), Error, Severity);
     }
 }
