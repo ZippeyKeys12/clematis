@@ -60,7 +60,7 @@ def ZBuild(Settings, Compress):
     # Compression
     if Compress:
         print("Compressing PK3 Archive: ", end="")
-        shutil.make_archive(ModName, "zip")
+        shutil.make_archive(ModName, "zip", ModName)
         os.rename(ModName+".zip", ArchiveName)
         shutil.rmtree(ModName)
         print("Successful")
