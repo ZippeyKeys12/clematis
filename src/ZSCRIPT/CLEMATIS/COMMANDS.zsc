@@ -1,0 +1,9 @@
+class ClematisTestHandler:StaticEventHandler{
+    override
+    void NetworkProcess(ConsoleEvent e){
+        String TestName=e.Name;
+        TestName.ToLower();
+        if(TestName.IndexOf("test:")!=-1)
+            Clematis.Create(TestName.Mid(5));
+    }
+}

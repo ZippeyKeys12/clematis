@@ -1,0 +1,94 @@
+class Clematis abstract{
+    bool Logging;
+
+    int StartTime;
+
+    Name CurrTestSuite;
+
+    Array<Cl_Result> Results;
+
+    static
+    Clematis Create(Class<Clematis> Type)
+    {return Clematis(new(Type)).Init();}
+
+    /* How to run
+     * Runs test upon creation by default
+     * With that setup one has 3 options
+     *
+     * 1. Console Command
+     *     netevent test:ClematisExample
+     * 2. EventHandler call
+     *     EventHandler.SendNetworkEvent('test:ClematisExample');
+     * 3. Factory method
+     *     Clematis.Create('ClematisExample');
+     *
+     * Otherwise one can instatiate the test and call run on it
+     *     Clematis TestSuite=Clematis.Create('ClematisExample');
+     *     TestSuite.Run();
+     */
+
+    virtual
+    Clematis Init(){
+        Run();
+        return self;
+    }
+
+    virtual
+    void Run()
+    {TestSuites();}
+
+    virtual
+    void Reset(){
+        StartTime=MSTime();
+        Results.Clear();
+    }
+
+    virtual
+    void TestSuites(){
+        /* Example
+         * Describe('Testing Player Stats');
+         *     It('MaxHealth', MaxHealth<100, ERR_Warning);
+         *     It('Math', 1+1==2, ERR_Fatal);
+         * EndDescribe();
+         */
+    }
+
+    void Describe(Name TestSuiteName){
+        Log(ERR_Info, "START SUITE: "..TestSuiteName);
+        CurrTestSuite=TestSuiteName;
+        Reset();
+    }
+
+    void EndDescribe(){
+        uint Failures=0
+           , Successes=0;
+        for(int i=0; i<Results.Size(); i++){
+            Cl_Result Curr=Results[i];
+            String Info="", Suff;
+            if(Curr.Success){
+                Info="\cd";
+                Suff="Successful";
+                Curr.Severity=ERR_Info;
+                Successes++;
+            }else{
+                Suff="Failure";
+                Failures++;
+            }
+            Log(Curr.Severity, Info.."Task "..Curr.Name..": "..Suff);
+        }
+        Log(ERR_Info, "END SUITE: "..CurrTestSuite.." - Took ~"..MSTime()-StartTime.." ms".."\n"
+                    ..Failures+Successes.." Tests Run, "..Successes.." Tests Succeeded, "..Failures.." Test Failed".."\n");
+    }
+
+    void It(Name TestCaseName, bool Condition, ZE_ErrorSeverity Severity)
+    {Results.Push(Cl_Result.Create(TestCaseName, Condition, Severity));}
+
+    /////////////
+    // Logging //
+    /////////////
+
+    void Log(ZE_ErrorSeverity Severity, String Error, bool Verbose=false){
+        if(!Verbose || Logging)
+            ZDebug.Error(GetClassName(), Error, Severity);
+    }
+}

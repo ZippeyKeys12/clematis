@@ -1,0 +1,35 @@
+enum ZE_ErrorSeverity{
+    ERR_Info,
+    ERR_Warning,
+    ERR_Error,
+    ERR_Fatal,
+}
+
+class ZDebug{
+    static
+    clearscope
+    void Message(String Output, Name CVarName)
+    {if(CVar.FindCVar(CVarName).GetBool())console.printf(Output);}
+
+    static
+    clearscope
+    void Error(Name Owner, String Error, ZE_ErrorSeverity Severity){
+        switch(Severity){
+            case ERR_Info:
+                Console.PrintF("%s INFO - %s", "["..Owner.."]", Error);
+                break;
+            case ERR_Warning:
+                Console.PrintF("\cx%s WARN - %s", "["..Owner.."]", Error);
+                break;
+            case ERR_Error:
+                Console.PrintF("\cr%s ERROR - %s", "["..Owner.."]", Error);
+                break;
+            case ERR_Fatal:
+                ThrowAbortException("\cy%s FATAL - %s", "["..Owner.."]", Error);
+                break;
+            default:
+                ThrowAbortException("Unclassified Error: \cw%s %s", "["..Owner.."]", Error);
+                break;
+        }
+    }
+}
