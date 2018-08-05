@@ -1,9 +1,12 @@
 class Clematis abstract{
     bool VerboseEnabled;
 
-    int StartTime;
+    Array<uint> Failures;
+    Array<uint> Successes;
+    Array<uint> StartTimes;
+    Array<uint> StartResultIndex;
 
-    Name CurrTestSuite;
+    Array<Name> TestSuiteNames;
 
     Array<Cl_Result> Results;
 
@@ -34,14 +37,18 @@ class Clematis abstract{
     }
 
     virtual
-    void Run()
-    {TestSuites();}
+    void Run(){
+        Reset();
+        BeforeAll();
+        TestSuites();
+        AfterAll();
+    }
 
     virtual
-    void Reset(){
-        StartTime=MSTime();
-        Results.Clear();
-    }
+    void Reset(){}
+
+    virtual
+    void BeforeAll(){}
 
     virtual
     void TestSuites(){
@@ -53,16 +60,25 @@ class Clematis abstract{
          */
     }
 
+    virtual
+    void AfterAll(){}
+
     void Describe(Name TestSuiteName){
-        Log(LOG_Info, "START SUITE: "..TestSuiteName);
-        CurrTestSuite=TestSuiteName;
-        Reset();
+        TestSuiteNames.Push(int(TestSuiteName));
+        StartResultIndex.Push(Results.Size());
+        Failures.Push(0);
+        Successes.Push(0);
+        StartTimes.Push(MSTime());
+        TabbedLog(LOG_None, "START SUITE: "..TestSuiteName);
     }
 
     void EndDescribe(){
+        uint EndTime=MSTime()-StartTimes[StartTimes.Size()-1];
+        StartTimes.Pop();
         uint Failures=0
            , Successes=0;
-        for(int i=0; i<Results.Size(); i++){
+        uint StartIndex=StartResultIndex[StartResultIndex.Size()-1];
+        for(int i=StartIndex; i<Results.Size(); i++){
             Cl_Result Curr=Results[i];
             String Suff;
             if(Curr.Success){
@@ -73,21 +89,50 @@ class Clematis abstract{
                 Suff="Failure";
                 Failures++;
             }
-            Log(Curr.Severity, "Task "..Curr.Name..": "..Suff);
+            TabbedLog(Curr.Severity, "Task "..Curr.Name..": "..Suff.." - Took ~"..Curr.DeltaTime.." ms", 1);
+            Results.Pop();
         }
-        Log(LOG_Info, "END SUITE: "..CurrTestSuite.." - Took ~"..MSTime()-StartTime.." ms".."\n"
-                    ..Failures+Successes.." Tests Run, "..Successes.." Tests Succeeded, "..Failures.." Test Failed".."\n");
+        for(int i=StartIndex; i<Results.Size(); i++)
+            Results.Pop();
+        StartResultIndex.Pop();
+        TabbedLog(LOG_None, "END SUITE: "..TestSuiteNames[TestSuiteNames.Size()-1].." - Took ~"..EndTime.." ms");
+        TabbedLog(LOG_None, TestsRunTotal(Failures,  Successes).." Tests Run, "..SuccessesTotal(Successes).." Tests Succeeded, "..FailuresTotal(Failures).." Test Failed");
+        AddTestsRunTotal(Successes, Failures);
+        TestSuiteNames.Pop();
     }
 
-    void It(Name TestCaseName, bool Condition, Cl_ELogSeverity Severity)
-    {Results.Push(Cl_Result.Create(TestCaseName, Condition, Severity));}
+    void It(Name TestCaseName, Cl_Assertion Assertion, Cl_ELogSeverity Severity){
+        uint DeltaTime=MSTime();
+        bool Condition=Assertion.Eval();
+        DeltaTime=DeltaTime-MSTime();
+        Results.Push(Cl_Result.Create(TestCaseName, Condition, Severity, DeltaTime));
+    }
 
-    /////////////
-    // Logging //
-    /////////////
+    void AddTestsRunTotal(uint NewSuccesses, uint NewFailures){
+        Successes.Pop();
+        if(Successes.Size())
+            Successes[Successes.Size()-1]+=NewSuccesses;
+        Failures.Pop();
+        if(Failures.Size())
+            Failures[Failures.Size()-1]+=NewFailures;
+    }
 
-    void Log(Cl_ELogSeverity Severity, String LogText, bool Verbose=false){
+    uint SuccessesTotal(uint NewSuccesses) const
+    {return Successes[Successes.Size()-1]+NewSuccesses;}
+
+    uint FailuresTotal(uint NewFailures) const
+    {return Failures[Failures.Size()-1]+NewFailures;}
+
+    uint TestsRunTotal(uint NewSuccesses, uint NewFailures) const
+    {return SuccessesTotal(NewSuccesses)+FailuresTotal(NewFailures);}
+
+    void Log(Cl_ELogSeverity Severity, String LogText, uint Offset=0, bool Verbose=false){
         if(!Verbose || VerboseEnabled)
-            Cl_Util.Log(GetClassName(), Severity, LogText);
+            Cl_Util.Log(GetClassName(), Severity, LogText, Offset);
+    }
+
+    void TabbedLog(Cl_ELogSeverity Severity, String LogText, uint Offset=0, bool Verbose=false){
+        if(!Verbose || VerboseEnabled)
+            Cl_Util.Log(GetClassName(), Severity, LogText, TestSuiteNames.Size()+Offset-1);
     }
 }

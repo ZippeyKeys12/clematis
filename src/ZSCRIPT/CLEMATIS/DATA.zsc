@@ -1,16 +1,19 @@
 class Cl_Result{
     bool Success;
 
+    uint DeltaTime;
+
     Name Name;
 
     Cl_ELogSeverity Severity;
 
     static
-    Cl_Result Create(Name Name, bool Success, Cl_ELogSeverity Severity){
+    Cl_Result Create(Name Name, bool Success, Cl_ELogSeverity Severity, uint DeltaTime){
         Cl_Result Result=new('Cl_Result');
         Result.Name=Name;
         Result.Success=Success;
         Result.Severity=Severity;
+        Result.DeltaTime=DeltaTime;
         return Result;
     }
 }

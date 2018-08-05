@@ -1,4 +1,5 @@
 enum Cl_ELogSeverity{
+    LOG_None,
     LOG_Info,
     LOG_Warning,
     LOG_Error,
@@ -19,20 +20,27 @@ class Cl_Util{
 
     static
     clearscope
-    void Log(Name Owner, Cl_ELogSeverity Severity, String LogText)
-    {Console.PrintF("%s %s - %s", "["..Owner.."]", LogLabel(Severity), LogText);}
+    void Log(Name Owner, Cl_ELogSeverity Severity, String LogText, uint Offset=0){
+        String Color, Result;
+        [Color, Result]=LogLabel(Severity);
+        if(Result!="")
+            Result=Result.." - ";
+        for(int i=0; i<Offset; i++)
+            Result=" "..Result;
+        if(Owner!='')
+            Result="["..Owner.."] "..Result;
+        Console.PrintF(Color..Result..LogText);
+    }
 
     static
     clearscope
-    String LogLabel(Cl_ELogSeverity Severity){
+    String, String LogLabel(Cl_ELogSeverity Severity){
         switch(Severity){
-            case LOG_Info:      return "INFO";
-            case LOG_Warning:   return "WARN";
-            case LOG_Error:     return "ERROR";
-            case LOG_Fatal:     return "FATAL";
-            default:
-                ThrowAbortException("Unknown Log Type: \cw%d", Severity);
-                return "";
+            case LOG_Info:      return "",      "INFO";
+            case LOG_Warning:   return "\cx",   "WARN";
+            case LOG_Error:     return "\cr",   "ERROR";
+            case LOG_Fatal:     return "\cy",   "FATAL";
+            default:            return "",      "";
         }
     }
 }
