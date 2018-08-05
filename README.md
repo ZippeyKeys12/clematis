@@ -1,7 +1,7 @@
 # Clematis
 Basic ZScript unit test framework for GZDoom
 
-This is inspired by [Lilac](https://github.com/chesko256/Lilac) by [Chesko](https://github.com/chesko256)
+Inspired by [Lilac](https://github.com/chesko256/Lilac) by [Chesko](https://github.com/chesko256)
 
 ## Documentation
 ### Making Test Suites
