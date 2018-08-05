@@ -1,0 +1,38 @@
+enum Cl_ELogSeverity{
+    LOG_Info,
+    LOG_Warning,
+    LOG_Error,
+    LOG_Fatal,
+}
+
+class Cl_Util{
+    static
+    clearscope
+    void Print(String Output, Name CVarName, bool Mid=false){
+        if(CVar.FindCVar(CVarName).GetBool()){
+            if(Mid)
+                Console.MidPrint(SmallFont, Output);
+            else
+                Console.PrintF(Output);
+        }
+    }
+
+    static
+    clearscope
+    void Log(Name Owner, Cl_ELogSeverity Severity, String LogText)
+    {Console.PrintF("%s %s - %s", "["..Owner.."]", LogLabel(Severity), LogText);}
+
+    static
+    clearscope
+    String LogLabel(Cl_ELogSeverity Severity){
+        switch(Severity){
+            case LOG_Info:      return "INFO";
+            case LOG_Warning:   return "WARN";
+            case LOG_Error:     return "ERROR";
+            case LOG_Fatal:     return "FATAL";
+            default:
+                ThrowAbortException("Unknown Log Type: \cw%d", Severity);
+                return "";
+        }
+    }
+}

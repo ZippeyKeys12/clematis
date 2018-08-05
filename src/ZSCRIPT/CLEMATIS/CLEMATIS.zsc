@@ -1,5 +1,5 @@
 class Clematis abstract{
-    bool Logging;
+    bool VerboseEnabled;
 
     int StartTime;
 
@@ -88,7 +88,7 @@ class Clematis abstract{
     /////////////
 
     void Log(Cl_ELogSeverity Severity, String LogText, bool Verbose=false){
-        if(!Verbose || Logging)
-            Cl_Debug.Log(GetClassName(), LogText, Severity);
+        if(!Verbose || VerboseEnabled)
+            Cl_Util.Log(GetClassName(), Severity, LogText);
     }
 }
