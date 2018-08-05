@@ -75,56 +75,49 @@ class Clematis abstract{
     void EndDescribe(){
         uint EndTime=MSTime()-StartTimes[StartTimes.Size()-1];
         StartTimes.Pop();
-        uint Failures=0
-           , Successes=0;
         uint StartIndex=StartResultIndex[StartResultIndex.Size()-1];
-        for(int i=StartIndex; i<Results.Size(); i++){
-            Cl_Result Curr=Results[i];
-            String Suff;
-            if(Curr.Success){
-                Suff="Successful";
-                Curr.Severity=LOG_Info;
-                Successes++;
-            }else{
-                Suff="Failure";
-                Failures++;
-            }
-            TabbedLog(Curr.Severity, "Task "..Curr.Name..": "..Suff.." - Took ~"..Curr.DeltaTime.." ms", 1);
-            Results.Pop();
-        }
-        for(int i=StartIndex; i<Results.Size(); i++)
-            Results.Pop();
         StartResultIndex.Pop();
         TabbedLog(LOG_None, "END SUITE: "..TestSuiteNames[TestSuiteNames.Size()-1].." - Took ~"..EndTime.." ms");
-        TabbedLog(LOG_None, TestsRunTotal(Failures,  Successes).." Tests Run, "..SuccessesTotal(Successes).." Tests Succeeded, "..FailuresTotal(Failures).." Test Failed");
-        AddTestsRunTotal(Successes, Failures);
+        TabbedLog(LOG_None, TestsRunTotal().." Tests Run, "..SuccessesTotal().." Tests Succeeded, "..FailuresTotal().." Test Failed");
         TestSuiteNames.Pop();
+        Successes.Pop();
+        Failures.Pop();
     }
 
     void It(Name TestCaseName, Cl_Assertion Assertion, Cl_ELogSeverity Severity){
         uint DeltaTime=MSTime();
         bool Condition=Assertion.Eval();
         DeltaTime=DeltaTime-MSTime();
-        Results.Push(Cl_Result.Create(TestCaseName, Condition, Severity, DeltaTime));
+        Cl_Result Result=Cl_Result.Create(TestCaseName, Condition, Severity, Assertion.ErrorMsg, DeltaTime);
+        String Suff;
+        if(Result.Success){
+            Suff="Successful";
+            Result.Severity=LOG_Info;
+        }else
+            Suff="Failure";
+        TabbedLog(Result.Severity, "Task "..Result.Name..": "..Suff.." - Took ~"..Result.DeltaTime.." ms", 1);
+        if(!Result.Success)
+            TabbedLog(Result.Severity, Result.ErrorMsg, 1);
+        AddTestsRunTotal(Result.Success);
     }
 
-    void AddTestsRunTotal(uint NewSuccesses, uint NewFailures){
-        Successes.Pop();
-        if(Successes.Size())
-            Successes[Successes.Size()-1]+=NewSuccesses;
-        Failures.Pop();
-        if(Failures.Size())
-            Failures[Failures.Size()-1]+=NewFailures;
+    void AddTestsRunTotal(bool Success){
+        if(Success)
+            for(int i=0; i<Successes.Size(); i++)
+                Successes[i]++;
+        else
+            for(int i=0; i<Failures.Size(); i++)
+                Failures[i]++;
     }
 
-    uint SuccessesTotal(uint NewSuccesses) const
-    {return Successes[Successes.Size()-1]+NewSuccesses;}
+    uint SuccessesTotal() const
+    {return Successes[Successes.Size()-1];}
 
-    uint FailuresTotal(uint NewFailures) const
-    {return Failures[Failures.Size()-1]+NewFailures;}
+    uint FailuresTotal() const
+    {return Failures[Failures.Size()-1];}
 
-    uint TestsRunTotal(uint NewSuccesses, uint NewFailures) const
-    {return SuccessesTotal(NewSuccesses)+FailuresTotal(NewFailures);}
+    uint TestsRunTotal() const
+    {return SuccessesTotal()+FailuresTotal();}
 
     void Log(Cl_ELogSeverity Severity, String LogText, uint Offset=0, bool Verbose=false){
         if(!Verbose || VerboseEnabled)

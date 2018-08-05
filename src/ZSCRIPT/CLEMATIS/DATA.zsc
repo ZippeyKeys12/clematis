@@ -5,14 +5,17 @@ class Cl_Result{
 
     Name Name;
 
+    String ErrorMsg;
+
     Cl_ELogSeverity Severity;
 
     static
-    Cl_Result Create(Name Name, bool Success, Cl_ELogSeverity Severity, uint DeltaTime){
+    Cl_Result Create(Name Name, bool Success, Cl_ELogSeverity Severity, String ErrorMsg, uint DeltaTime){
         Cl_Result Result=new('Cl_Result');
         Result.Name=Name;
         Result.Success=Success;
         Result.Severity=Severity;
+        Result.ErrorMsg=ErrorMsg;
         Result.DeltaTime=DeltaTime;
         return Result;
     }
