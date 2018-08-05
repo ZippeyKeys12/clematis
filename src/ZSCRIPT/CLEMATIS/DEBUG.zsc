@@ -8,14 +8,18 @@ enum Cl_EErrorSeverity{
 class Cl_Debug{
     static
     clearscope
-    void Message(String Output, Name CVarName){
-        if(CVar.FindCVar(CVarName).GetBool())
-            console.printf(Output);
+    void Print(String Output, Name CVarName, bool Mid=false){
+        if(CVar.FindCVar(CVarName).GetBool()){
+            if(Mid)
+                Console.MidPrint(SmallFont, Output);
+            else
+                Console.PrintF(Output);
+        }
     }
 
     static
     clearscope
-    void Error(Name Owner, String Error, Cl_EErrorSeverity Severity){
+    void Log(Name Owner, String Error, Cl_EErrorSeverity Severity){
         switch(Severity){
             case ERR_Info:
                 Console.PrintF("%s INFO - %s", "["..Owner.."]", Error);
