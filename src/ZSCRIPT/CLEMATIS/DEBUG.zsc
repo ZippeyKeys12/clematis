@@ -1,8 +1,8 @@
-enum Cl_EErrorSeverity{
-    ERR_Info,
-    ERR_Warning,
-    ERR_Error,
-    ERR_Fatal,
+enum Cl_ELogSeverity{
+    LOG_Info,
+    LOG_Warning,
+    LOG_Error,
+    LOG_Fatal,
 }
 
 class Cl_Debug{
@@ -19,22 +19,22 @@ class Cl_Debug{
 
     static
     clearscope
-    void Log(Name Owner, String Error, Cl_EErrorSeverity Severity){
+    void Log(Name Owner, String LogText, Cl_ELogSeverity Severity){
         switch(Severity){
-            case ERR_Info:
-                Console.PrintF("%s INFO - %s", "["..Owner.."]", Error);
+            case LOG_Info:
+                Console.PrintF("%s INFO - %s", "["..Owner.."]", LogText);
                 break;
-            case ERR_Warning:
-                Console.PrintF("\cx%s WARN - %s", "["..Owner.."]", Error);
+            case LOG_Warning:
+                Console.PrintF("\cx%s WARN - %s", "["..Owner.."]", LogText);
                 break;
-            case ERR_Error:
-                Console.PrintF("\cr%s ERROR - %s", "["..Owner.."]", Error);
+            case LOG_Error:
+                Console.PrintF("\cr%s ERROR - %s", "["..Owner.."]", LogText);
                 break;
-            case ERR_Fatal:
-                ThrowAbortException("\cy%s FATAL - %s", "["..Owner.."]", Error);
+            case LOG_Fatal:
+                ThrowAbortException("\cy%s FATAL - %s", "["..Owner.."]", LogText);
                 break;
             default:
-                ThrowAbortException("Unclassified Error: \cw%s %s", "["..Owner.."]", Error);
+                ThrowAbortException("Unclassified Error: \cw%s %s", "["..Owner.."]", LogText);
                 break;
         }
     }

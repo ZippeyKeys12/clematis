@@ -3,10 +3,10 @@ class Cl_Result{
 
     Name Name;
 
-    Cl_EErrorSeverity Severity;
+    Cl_ELogSeverity Severity;
 
     static
-    Cl_Result Create(Name Name, bool Success, Cl_EErrorSeverity Severity){
+    Cl_Result Create(Name Name, bool Success, Cl_ELogSeverity Severity){
         Cl_Result Result=new('Cl_Result');
         Result.Name=Name;
         Result.Success=Success;
