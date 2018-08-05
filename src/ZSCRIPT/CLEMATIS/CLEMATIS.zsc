@@ -64,9 +64,8 @@ class Clematis abstract{
            , Successes=0;
         for(int i=0; i<Results.Size(); i++){
             Cl_Result Curr=Results[i];
-            String Info="", Suff;
+            String Suff;
             if(Curr.Success){
-                Info="\cd";
                 Suff="Successful";
                 Curr.Severity=LOG_Info;
                 Successes++;
@@ -74,7 +73,7 @@ class Clematis abstract{
                 Suff="Failure";
                 Failures++;
             }
-            Log(Curr.Severity, Info.."Task "..Curr.Name..": "..Suff);
+            Log(Curr.Severity, "Task "..Curr.Name..": "..Suff);
         }
         Log(LOG_Info, "END SUITE: "..CurrTestSuite.." - Took ~"..MSTime()-StartTime.." ms".."\n"
                     ..Failures+Successes.." Tests Run, "..Successes.." Tests Succeeded, "..Failures.." Test Failed".."\n");
