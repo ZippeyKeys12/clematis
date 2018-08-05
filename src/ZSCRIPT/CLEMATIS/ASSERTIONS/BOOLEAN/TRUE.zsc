@@ -5,6 +5,7 @@ class Cl_AssertTrue:Cl_Assertion{
     Cl_Assertion Create(bool Condition){
         Cl_AssertTrue Result=new('Cl_AssertTrue');
         Result.Condition=Condition;
+        Result.ErrorMsg="Value was not true";
         return Result;
     }
 
@@ -15,6 +16,6 @@ class Cl_AssertTrue:Cl_Assertion{
 
 extend
 class Clematis{
-    Cl_Assertion AssertTrue(bool Condition)
+    Cl_Assertion Assert(bool Condition)
     {return Cl_AssertTrue.Create(Condition);}
 }

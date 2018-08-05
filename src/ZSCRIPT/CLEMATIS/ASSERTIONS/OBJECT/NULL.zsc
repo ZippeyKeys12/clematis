@@ -1,0 +1,21 @@
+class Cl_AssertNull:Cl_Assertion{
+    Object Value;
+
+    static
+    Cl_Assertion Create(Object Value){
+        Cl_AssertNull Result=new('Cl_AssertNull');
+        Result.Value=Value;
+        Result.ErrorMsg="Value was not null";
+        return Result;
+    }
+
+    override
+    bool Eval()
+    {return !Value;}
+}
+
+extend
+class Clematis{
+    Cl_Assertion AssertNull(Object Value)
+    {return Cl_AssertNull.Create(Value);}
+}
