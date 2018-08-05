@@ -1,0 +1,20 @@
+class Cl_AssertFalse:Cl_Assertion{
+    bool Condition;
+
+    static
+    Cl_Assertion Create(bool Condition){
+        Cl_AssertFalse Result=new('Cl_AssertFalse');
+        Result.Condition=Condition;
+        return Result;
+    }
+
+    override
+    bool Eval()
+    {return !Condition;}
+}
+
+extend
+class Clematis{
+    Cl_Assertion AssertFalse(bool Condition)
+    {return Cl_AssertFalse.Create(Condition);}
+}

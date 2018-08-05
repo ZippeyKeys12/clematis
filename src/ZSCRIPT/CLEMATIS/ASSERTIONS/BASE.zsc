@@ -1,0 +1,5 @@
+class Cl_Assertion abstract{
+    virtual
+    bool Eval()
+    {return false;}
+}
