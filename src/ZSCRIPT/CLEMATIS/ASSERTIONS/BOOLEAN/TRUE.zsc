@@ -2,10 +2,13 @@ class Cl_AssertTrue:Cl_Assertion{
     bool Condition;
 
     static
-    Cl_Assertion Create(bool Condition){
+    Cl_Assertion Create(bool Condition, String ErrorMsg=""){
         Cl_AssertTrue Result=new('Cl_AssertTrue');
         Result.Condition=Condition;
-        Result.ErrorMsg="Value was not true";
+        if(ErrorMsg=="")
+            Result.ErrorMsg="Value was not true";
+        else
+            Result.ErrorMsg=ErrorMsg;
         return Result;
     }
 

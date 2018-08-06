@@ -5,21 +5,24 @@ class Cl_AssertEval:Cl_Assertion{
     String Operator;
 
     static
-    Cl_Assertion Create(double Val1, String Operator, double Val2){
+    Cl_Assertion Create(double Val1, String Operator, double Val2, String ErrorMsg=""){
         Cl_AssertEval Result=new('Cl_AssertEval');
         Result.Val1=Val1;
         Result.Operator=Operator;
         Result.Val2=Val2;
-        if(Operator=="=" || Operator=="==" || Operator=="~=" || Operator=="~==")
-            Result.ErrorMsg="Values were not equal";
-        else if(Operator=="<")
-            Result.ErrorMsg="Value1 was not less than Value2";
-        else if(Operator==">")
-            Result.ErrorMsg="Value1 was not greater than Value2";
-        else if(Operator=="<=")
-            Result.ErrorMsg="Value1 was not less than or equal to Value2";
-        else if(Operator==">=")
-            Result.ErrorMsg="Value1 was not greater than or equal to Value2";
+        if(ErrorMsg==""){
+            if(Operator=="=" || Operator=="==" || Operator=="~=" || Operator=="~==")
+                Result.ErrorMsg="Values were not equal";
+            else if(Operator=="<")
+                Result.ErrorMsg="Value1 was not less than Value2";
+            else if(Operator==">")
+                Result.ErrorMsg="Value1 was not greater than Value2";
+            else if(Operator=="<=")
+                Result.ErrorMsg="Value1 was not less than or equal to Value2";
+            else if(Operator==">=")
+                Result.ErrorMsg="Value1 was not greater than or equal to Value2";
+        }else
+            Result.ErrorMsg=ErrorMsg;
         return Result;
     }
 

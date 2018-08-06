@@ -2,10 +2,13 @@ class Cl_AssertNotNull:Cl_Assertion{
     Object Value;
 
     static
-    Cl_Assertion Create(Object Value){
+    Cl_Assertion Create(Object Value, String ErrorMsg=""){
         Cl_AssertNotNull Result=new('Cl_AssertNotNull');
         Result.Value=Value;
-        Result.ErrorMsg="Value was null";
+        if(ErrorMsg=="")
+            Result.ErrorMsg="Value was null";
+        else
+            Result.ErrorMsg=ErrorMsg;
         return Result;
     }
 
