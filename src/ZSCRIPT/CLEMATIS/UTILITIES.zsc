@@ -29,7 +29,7 @@ class Cl_Util{
             Result=" "..Result;
         if(Owner!='')
             Result="["..Owner.."] "..Result;
-        String LogText=Color..Result..LogText;
+        LogText=Color..Result..LogText;
         if(Severity==LOG_Fatal)
             ThrowAbortException(LogText);
         else
