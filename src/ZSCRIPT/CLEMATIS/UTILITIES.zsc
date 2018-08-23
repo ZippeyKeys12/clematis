@@ -29,7 +29,11 @@ class Cl_Util{
             Result=" "..Result;
         if(Owner!='')
             Result="["..Owner.."] "..Result;
-        Console.PrintF(Color..Result..LogText);
+        String LogText=Color..Result..LogText;
+        if(Severity==LOG_Fatal)
+            ThrowAbortException(LogText);
+        else
+            Console.PrintF(LogText);
     }
 
     static
