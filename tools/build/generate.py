@@ -45,9 +45,7 @@ def ZGenerate(FullFile):
         Call = Pattern.search(FullFile)
     print("Successful")
 
-    # Templates
     # TODO: C-style preprocessing
-    print("  Generics:")
 
     # End
     return FullFile

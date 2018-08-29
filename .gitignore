@@ -51,6 +51,5 @@ Temporary Items
 
 # Specific
 dist/
-src/GRAPHICS/
 .vscode
 __pycache__/
