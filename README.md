@@ -45,5 +45,5 @@ Clematis Tester=Clematis.Create('ClematisExample');
 Tester.Run();
 ```
 
-### License
+## License
 Clematis is under the [BSD 3-Clause License](https://github.com/ZippeyKeys12/clematis/blob/master/LICENSE)
