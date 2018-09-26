@@ -1,3 +1,9 @@
 {
-    "python.pythonPath": "/usr/local/bin/python3"
+    "python.pythonPath": "/usr/local/bin/python3",
+    "files.associations": {
+        "*.zsc": "csharp",
+        "*.mf": "ruby",
+        "Gemfile": "ruby",
+        "Pipfile": "toml"
+    }
 }
