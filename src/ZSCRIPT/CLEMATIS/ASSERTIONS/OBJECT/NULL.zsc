@@ -19,6 +19,6 @@ class Cl_AssertNull:Cl_Assertion{
 
 extend
 class Clematis{
-    Cl_Assertion AssertNull(Object Value)
-    {return Cl_AssertNull.Create(Value);}
+    Cl_Assertion AssertNull(Object Value, String ErrorMsg="")
+    {return Cl_AssertNull.Create(Value, ErrorMsg);}
 }

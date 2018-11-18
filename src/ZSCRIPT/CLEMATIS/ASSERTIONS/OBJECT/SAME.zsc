@@ -21,6 +21,6 @@ class Cl_AssertSame:Cl_Assertion{
 
 extend
 class Clematis{
-    Cl_Assertion AssertSame(Object Val1, Object Val2)
-    {return Cl_AssertSame.Create(Val1, Val2);}
+    Cl_Assertion AssertSame(Object Val1, Object Val2, String ErrorMsg="")
+    {return Cl_AssertSame.Create(Val1, Val2, ErrorMsg);}
 }

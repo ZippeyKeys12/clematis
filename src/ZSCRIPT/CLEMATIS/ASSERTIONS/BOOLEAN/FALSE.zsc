@@ -19,6 +19,6 @@ class Cl_AssertFalse:Cl_Assertion{
 
 extend
 class Clematis{
-    Cl_Assertion AssertFalse(bool Condition)
-    {return Cl_AssertFalse.Create(Condition);}
+    Cl_Assertion AssertFalse(bool Condition, String ErrorMsg="")
+    {return Cl_AssertFalse.Create(Condition, ErrorMsg);}
 }

@@ -9,13 +9,14 @@ class ClematisExample:Clematis{
     override
     void TestSuites(){
         Describe('Testing Player Stats');
-            It('MaxHealth', 90>100, ERR_Warning);
-            It('Math', 1+1==2, ERR_Fatal);
+            It('MaxHealth', AssertEval(MaxHealth, '<', 100), LOG_Warning);
+            It('Math', AssertEval(1+1, '==', 2), LOG_Fatal);
+            It('Woot', AssertTrue(exampleBool), LOG_Fatal);
         EndDescribe();
 
         Describe('Testing Math');
-            It('Calculus', 0*1!=0, ERR_Error);
-            It('Math', 1+2==2, ERR_Warning);
+            It('Calculus', AssertFalse(0*1!=0), ERR_Error);
+            It('Math', AssertSame(Pointer1, Pointer2, "Custom error mesage"), ERR_Warning);
         EndDescribe();
     }
 }

@@ -54,8 +54,9 @@ class Clematis abstract{
     void TestSuites(){
         /* Example
          * Describe('Testing Player Stats');
-         *     It('MaxHealth', MaxHealth<100, LOG_Warning);
-         *     It('Math', 1+1==2, LOG_Fatal);
+         *     It('MaxHealth', AssertEval(MaxHealth, '<', 100), LOG_Warning);
+         *     It('Math', AssertEval(1+1, '==', 2), LOG_Fatal);
+         *     It('Woot', AssertTrue(exampleBool), LOG_Fatal);
          * EndDescribe();
          */
     }

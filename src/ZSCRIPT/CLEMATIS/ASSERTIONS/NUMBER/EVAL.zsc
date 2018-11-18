@@ -47,6 +47,6 @@ class Cl_AssertEval:Cl_Assertion{
 
 extend
 class Clematis{
-    Cl_Assertion AssertEval(double Val1, String Operator, double Val2)
-    {return Cl_AssertEval.Create(Val1, Operator, Val2);}
+    Cl_Assertion AssertEval(double Val1, String Operator, double Val2, String ErrorMsg="")
+    {return Cl_AssertEval.Create(Val1, Operator, Val2, ErrorMsg);}
 }
