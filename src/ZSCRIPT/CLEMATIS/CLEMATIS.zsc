@@ -25,7 +25,7 @@ class Clematis abstract{
      * 3. Factory method
      *     Clematis.Create('ClematisExample');
      *
-     * Otherwise one can instatiate the test and call run on it
+     * Otherwise one can instantiate the test and call run on it
      *     Clematis TestSuite=Clematis.Create('ClematisExample');
      *     TestSuite.Run();
      */
