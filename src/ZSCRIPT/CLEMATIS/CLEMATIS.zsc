@@ -25,7 +25,7 @@ class Clematis abstract{
      * 3. Factory method
      *     Clematis.Create('ClematisExample');
      *
-     * Otherwise one can instatiate the test and call run on it
+     * Otherwise one can instantiate the test and call run on it
      *     Clematis TestSuite=Clematis.Create('ClematisExample');
      *     TestSuite.Run();
      */
@@ -86,9 +86,11 @@ class Clematis abstract{
     }
 
     void It(Name TestCaseName, Cl_Assertion Assertion, Cl_ELogSeverity Severity){
-        uint DeltaTime=MSTime();
+        uint TimeBefore=MSTime();
         bool Condition=Assertion.Eval();
-        DeltaTime=DeltaTime-MSTime();
+        uint TimeAfter=MSTime();
+        uint DeltaTime=TimeAfter-TimeBefore;
+
         Cl_Result Result=Cl_Result.Create(TestCaseName, Condition, Severity, Assertion.ErrorMsg, DeltaTime);
         String Suff;
         if(Result.Success){

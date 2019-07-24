@@ -15,8 +15,8 @@ class ClematisExample:Clematis{
         EndDescribe();
 
         Describe('Testing Math');
-            It('Calculus', AssertFalse(0*1!=0), ERR_Error);
-            It('Math', AssertSame(Pointer1, Pointer2, "Custom error mesage"), ERR_Warning);
+            It('Calculus', AssertFalse(0*1!=0), LOG_Error);
+            It('Math', AssertSame(Pointer1, Pointer2, "Custom error message"), LOG_Warning);
         EndDescribe();
     }
 }
