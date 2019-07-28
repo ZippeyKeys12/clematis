@@ -51,6 +51,12 @@ class Clematis abstract{
     void BeforeAll(){}
 
     virtual
+    void BeforeEachSuite(){}
+
+    virtual
+    void BeforeEachTask(){}
+
+    virtual
     void TestSuites(){
         /* Example
          * Describe('Testing Player Stats');
@@ -62,14 +68,23 @@ class Clematis abstract{
     }
 
     virtual
+    void AfterEachSuite(){}
+
+    virtual
+    void AfterEachTask(){}
+
+    virtual
     void AfterAll(){}
 
     void Describe(Name TestSuiteName){
+        BeforeEachSuite();
+
         TestSuiteNames.Push(int(TestSuiteName));
         StartResultIndex.Push(Results.Size());
         Failures.Push(0);
         Successes.Push(0);
         StartTimes.Push(MSTime());
+
         TabbedLog(LOG_None, "START SUITE: "..TestSuiteName);
     }
 
@@ -78,14 +93,20 @@ class Clematis abstract{
         StartTimes.Pop();
         uint StartIndex=StartResultIndex[StartResultIndex.Size()-1];
         StartResultIndex.Pop();
+
         TabbedLog(LOG_None, "END SUITE: "..TestSuiteNames[TestSuiteNames.Size()-1].." - Took ~"..EndTime.." ms");
         TabbedLog(LOG_None, TestsRunTotal().." Tests Run, "..SuccessesTotal().." Tests Succeeded, "..FailuresTotal().." Test Failed");
+
         TestSuiteNames.Pop();
         Successes.Pop();
         Failures.Pop();
+
+        AfterEachSuite();
     }
 
     void It(Name TestCaseName, Cl_Assertion Assertion, Cl_ELogSeverity Severity){
+        BeforeEachTask();
+
         uint TimeBefore=MSTime();
         bool Condition=Assertion.Eval();
         uint TimeAfter=MSTime();
@@ -102,6 +123,8 @@ class Clematis abstract{
         if(!Result.Success)
             TabbedLog(Result.Severity, Result.ErrorMsg, 1);
         AddTestsRunTotal(Result.Success);
+
+        AfterEachTask();
     }
 
     void AddTestsRunTotal(bool Success){
