@@ -1,9 +1,12 @@
 enum Cl_ELogSeverity{
-    LOG_None,
-    LOG_Info,
-    LOG_Warning,
-    LOG_Error,
     LOG_Fatal,
+    LOG_Error,      // cl_logging_level = 1
+    LOG_Warning,    // cl_logging_level = 2
+    LOG_Info,       // cl_logging_level = 3
+    LOG_Debug,      // cl_debugging = true
+
+    // DEPRECATED
+    LOG_None = LOG_Info
 }
 
 class Cl_Util{
@@ -20,19 +23,35 @@ class Cl_Util{
 
     static
     clearscope
-    void Log(Name Owner, Cl_ELogSeverity Severity, String LogText, uint Offset=0){
+    bool Log(Name Owner, Cl_ELogSeverity severity, String LogText,
+        uint Offset=0, bool overrideLogLevel=false){
+        if (!overrideLogLevel){
+            if (severity > CVar.FindCVar('cl_logging_level').GetInt()
+                && severity != LOG_Fatal && severity != LOG_Debug)
+                return false;
+
+            if (severity == LOG_Debug && !CVar.FindCVar('cl_debugging').GetBool())
+                return false;
+        }
+
         String Color, Result;
-        [Color, Result]=LogLabel(Severity);
-        if(Result!="")
+        [Color, Result]=LogLabel(severity);
+
+        if (Result!="")
             Result=Result.." - ";
-        for(int i=0; i<Offset; i++)
+
+        for (int i=0; i<Offset; i++)
             Result=" "..Result;
-        if(Owner!='')
+
+        if (Owner!='')
             Result="["..Owner.."] "..Result;
+
         LogText=Color..Result..LogText;
         Console.PrintF(LogText);
-        if(Severity==LOG_Fatal)
+        if(severity == LOG_Fatal)
             ThrowAbortException(LogText);
+        
+        return true;
     }
 
     static

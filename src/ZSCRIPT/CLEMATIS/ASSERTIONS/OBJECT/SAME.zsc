@@ -8,9 +8,9 @@ class Cl_AssertSame:Cl_Assertion{
         Result.Val1=Val1;
         Result.Val2=Val2;
         if(ErrorMsg=="")
-            Result.ErrorMsg="Values were not the same";
+            Result.ErrorMsg = "Values were not the same";
         else
-            Result.ErrorMsg=ErrorMsg;
+            Result.ErrorMsg = String.Format(ErrorMsg, Val1, Val2);
         return Result;
     }
 

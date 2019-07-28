@@ -152,6 +152,6 @@ class Clematis abstract{
 
     void TabbedLog(Cl_ELogSeverity Severity, String LogText, uint Offset=0, bool Verbose=false){
         if(!Verbose || VerboseEnabled)
-            Cl_Util.Log(GetClassName(), Severity, LogText, TestSuiteNames.Size()+Offset-1);
+            Cl_Util.Log(GetClassName(), Severity, LogText, TestSuiteNames.Size()+Offset-1, true);
     }
 }

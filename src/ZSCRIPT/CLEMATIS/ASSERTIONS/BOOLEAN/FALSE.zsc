@@ -6,9 +6,9 @@ class Cl_AssertFalse:Cl_Assertion{
         Cl_AssertFalse Result=new('Cl_AssertFalse');
         Result.Condition=Condition;
         if(ErrorMsg=="")
-            Result.ErrorMsg="Value was not false";
+            Result.ErrorMsg = "Value was not false";
         else
-            Result.ErrorMsg=ErrorMsg;
+            Result.ErrorMsg = String.Format(ErrorMsg, Condition);
         return Result;
     }
 

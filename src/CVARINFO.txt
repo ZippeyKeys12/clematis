@@ -1,0 +1,2 @@
+server int cl_logging_level = 1;
+server bool cl_debugging = true;

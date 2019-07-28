@@ -22,7 +22,7 @@ class Cl_AssertEval:Cl_Assertion{
             else if(Operator==">=")
                 Result.ErrorMsg = String.Format("%f was not greater than or equal to %f", Val1, Val2);
         }else
-            Result.ErrorMsg=ErrorMsg;
+            Result.ErrorMsg = String.Format(ErrorMsg, Val1, Val2);
         return Result;
     }
 

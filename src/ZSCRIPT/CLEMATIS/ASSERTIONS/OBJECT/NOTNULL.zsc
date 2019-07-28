@@ -6,9 +6,9 @@ class Cl_AssertNotNull:Cl_Assertion{
         Cl_AssertNotNull Result=new('Cl_AssertNotNull');
         Result.Value=Value;
         if(ErrorMsg=="")
-            Result.ErrorMsg="Value was null";
+            Result.ErrorMsg = "Value was null";
         else
-            Result.ErrorMsg=ErrorMsg;
+            Result.ErrorMsg = String.Format(ErrorMsg, Value);
         return Result;
     }
 

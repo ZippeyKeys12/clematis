@@ -6,9 +6,9 @@ class Cl_AssertTrue:Cl_Assertion{
         Cl_AssertTrue Result=new('Cl_AssertTrue');
         Result.Condition=Condition;
         if(ErrorMsg=="")
-            Result.ErrorMsg="Value was not true";
+            Result.ErrorMsg = "Value was not true";
         else
-            Result.ErrorMsg=ErrorMsg;
+            Result.ErrorMsg = String.Format(ErrorMsg, Condition);
         return Result;
     }
 
@@ -19,6 +19,7 @@ class Cl_AssertTrue:Cl_Assertion{
 
 extend
 class Clematis{
+    // TODO: Change to AssertTrue
     Cl_Assertion Assert(bool Condition, String ErrorMsg="")
     {return Cl_AssertTrue.Create(Condition, ErrorMsg);}
 }
