@@ -5,18 +5,21 @@ Inspired by [Lilac](https://github.com/chesko256/Lilac) by [Chesko](https://gith
 ## Documentation
 ### Making Test Suites
 ```CSharp
-class ClematisExample:Clematis{
+class ClematisExample : Clematis{
     override
     void TestSuites(){
         Describe('Testing Player Stats');
-            It('MaxHealth', AssertEval(MaxHealth, '<', 100), LOG_Warning);
+            It('MaxHealth', AssertEval(20, '<', 100), LOG_Warning);
             It('Math', AssertEval(1+1, '==', 2), LOG_Fatal);
-            It('Woot', AssertTrue(exampleBool), LOG_Fatal);
+            It('Woot', Assert(true), LOG_Fatal);
         EndDescribe();
+
+        let x = new('Object');
+        let y = new('Object');
 
         Describe('Testing Math');
             It('Calculus', AssertFalse(0*1!=0), LOG_Error);
-            It('Math', AssertSame(Pointer1, Pointer2, "Custom error message"), LOG_Warning);
+            It('Math', AssertSame(x, y, "Custom error message using values (%p and %p)"), LOG_Warning);
         EndDescribe();
     }
 }
