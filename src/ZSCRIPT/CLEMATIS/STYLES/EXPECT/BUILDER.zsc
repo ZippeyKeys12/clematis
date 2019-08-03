@@ -1,0 +1,204 @@
+class Cl_ExpectBuilder {
+    bool neg,
+         refBool,
+         secBool,
+         finished;
+
+    double refNum,
+           secNum;
+
+    Object refObj,
+           secObj;
+
+    Class refCls,
+          secCls;
+
+    Cl_EAssertType refType,
+                   secType;
+
+    protected
+    Cl_ExpectMatcher matcher;
+
+    Cl_ExpectBuilder to, be, of;
+
+    static
+    Cl_ExpectBuilder Create(Cl_EAssertType refType, String condition) {
+        let ret = new('Cl_ExpectBuilder');
+        ret.refType = refType;
+        ret.to = ret.be = ret.of = ret;
+
+        Array<String> conditions;
+        condition.Split(conditions, ' ');
+
+        static const Name fillerNames[] = {
+            'to', 'be', 'than', 'of'
+        };
+
+        for (let i=0; i<fillerNames.Size(); i++) {
+            let index = conditions.Find(fillerNames[i]);
+
+            if (index != conditions.Size()) {
+                conditions.Delete(index);
+                i--;
+            }
+        }
+
+        let index = conditions.Find('not');
+        if (index != conditions.Size()) {
+            conditions.Delete(index);
+            ret.not();
+        }
+
+        if (conditions.Size() > 1) {
+            let tot = "[ ";
+            for (let i=0; i<conditions.Size()-1; i++)
+                tot = tot..conditions[i]..", ";
+            tot = tot..conditions[conditions.Size()-1].."]";
+
+            Cl_Util.Log('Clematis', LOG_Error, "Unresolved conditions: "..tot);
+        }
+
+        if (conditions.Size() == 1)
+            ret.SetMatcher(conditions[0]);
+
+        return ret;
+    }
+
+    static
+    Cl_ExpectBuilder CreateBool(bool ref, String condition) {
+        while (condition.IndexOf('  ') != -1)
+            condition.Replace('  ', ' ');
+
+        let ret = Cl_ExpectBuilder.Create(ASSERT_Bool, condition);
+        ret.refType = ASSERT_Bool;
+        ret.refBool = ref;
+
+        return ret;
+    }
+
+    static
+    Cl_ExpectBuilder CreateNum(double ref, String condition) {
+        while (condition.IndexOf('  ') != -1)
+            condition.Replace('  ', ' ');
+
+        let ret = Cl_ExpectBuilder.Create(ASSERT_Num, condition);
+        ret.refType = ASSERT_Num;
+        ret.refNum = ref;
+
+        return ret;
+    }
+
+    static
+    Cl_ExpectBuilder CreateObj(Object ref, String condition) {
+        while (condition.IndexOf('  ') != -1)
+            condition.Replace('  ', ' ');
+
+        let ret = Cl_ExpectBuilder.Create(ASSERT_Obj, condition);
+        ret.refType = ASSERT_Obj;
+        ret.refObj = ref;
+
+        return ret;
+    }
+
+    static
+    Cl_ExpectBuilder CreateCls(Class ref, String condition) {
+        while (condition.IndexOf('  ') != -1)
+            condition.Replace('  ', ' ');
+
+        let ret = Cl_ExpectBuilder.Create(ASSERT_Cls, condition);
+        ret.refType = ASSERT_Cls;
+        ret.refCls = ref;
+
+        return ret;
+    }
+
+    virtual
+    Cl_ExpectBuilder Clone() const {
+        let ret = Cl_ExpectBuilder(new(getClassName()));
+        ret.neg = neg;
+        ret.refBool = refBool;
+        ret.secBool = secBool;
+        ret.finished = finished;
+        ret.refNum = refNum;
+        ret.secNum = secNum;
+        ret.refObj = refObj;
+        ret.secObj = secObj;
+        ret.refCls = refCls;
+        ret.secCls = secCls;
+        ret.refType = refType;
+        ret.secType = secType;
+        ret.matcher = matcher;
+        ret.to = ret.be = ret.of = ret;
+        return ret;
+    }
+
+    void CheckStatus() {
+        if (finished)
+            Cl_Util.Log("Clematis", LOG_Fatal,
+                "Expectation was already completed, make a new one if you want to run a second test");
+    }
+
+    void SetMatcher(Name id) {
+        finished = true;
+        matcher = Cl_ExpectExtensions.Get().ResolveMatcher(refType, id);
+    }
+
+    Cl_ExpectBuilder not() {
+        neg = !neg;
+        return self;
+    }
+
+    Cl_ExpectBuilder equal() {
+        SetMatcher('=');
+        return self;
+    }
+
+    Cl_ExpectBuilder lessThan() {
+        SetMatcher('<');
+        return self;
+    }
+
+    Cl_ExpectBuilder lessThanOrEqual() {
+        SetMatcher('<=');
+        return self;
+    }
+
+    Cl_ExpectBuilder greaterThan() {
+        SetMatcher('>');
+        return self;
+    }
+
+    Cl_ExpectBuilder greaterThanOrEqual() {
+        SetMatcher('>=');
+        return self;
+    }
+
+    Cl_ExpectBuilder instance() {
+        SetMatcher('instance');
+        return self;
+    }
+
+    Cl_Assertion thisBool(bool sec) {
+        secBool = sec;
+        secType = ASSERT_Bool;
+        return matcher.Match(self);
+    }
+
+    Cl_Assertion thisNum(double sec) {
+        secNum = sec;
+        secType = ASSERT_Num;
+        return matcher.Match(self);
+    }
+
+    Cl_Assertion thisObj(Object sec) {
+        secObj = sec;
+        secType = ASSERT_Obj;
+        return matcher.Match(self);
+    }
+
+    Cl_Assertion thisCls(Class sec) {
+        secCls = sec;
+        secType = ASSERT_Cls;
+        return matcher.Match(self);
+    }
+}

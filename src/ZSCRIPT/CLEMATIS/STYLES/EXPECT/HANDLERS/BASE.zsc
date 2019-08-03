@@ -1,0 +1,4 @@
+class Cl_ExpectHandler abstract {
+    virtual
+    Name ID() {return '';}
+}

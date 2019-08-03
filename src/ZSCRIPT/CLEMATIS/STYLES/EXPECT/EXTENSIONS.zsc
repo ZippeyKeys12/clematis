@@ -1,0 +1,79 @@
+class Cl_ExpectExtensions : StaticEventHandler {
+    Array<Cl_ExpectMatcher> boolMatchers;
+    Array<Cl_ExpectMatcher> numMatchers;
+    Array<Cl_ExpectMatcher> objMatchers;
+    Array<Cl_ExpectMatcher> clsMatchers;
+
+    static
+    clearscope
+    Cl_ExpectExtensions Get() {
+        return Cl_ExpectExtensions(StaticEventHandler.Find('Cl_ExpectExtensions'));
+    }
+
+    override
+    void OnRegister() {
+        super.OnRegister();
+        console.printf('cc');
+
+        let val = new('Cl_EMatchEqual');
+        AddMatcher(ASSERT_Bool, val);
+        AddMatcher(ASSERT_Num, val);
+        AddMatcher(ASSERT_Obj, val);
+
+        AddMatcher(ASSERT_Num, new('Cl_EMatchLess'));
+        AddMatcher(ASSERT_Num, new('Cl_EMatchLessEqual'));
+        AddMatcher(ASSERT_Num, new('Cl_EMatchGreater'));
+        AddMatcher(ASSERT_Num, new('Cl_EMatchGreaterEqual'));
+
+        AddMatcher(ASSERT_Obj, new('Cl_EMatchInstance'));
+    }
+
+    bool AddMatcher(Cl_EAssertType refType, Cl_ExpectMatcher matcher) {
+        switch (refType) {
+            case ASSERT_Bool:
+            return boolMatchers.Push(matcher);
+
+            case ASSERT_Num:
+            return numMatchers.Push(matcher);
+
+            case ASSERT_Obj:
+            return objMatchers.Push(matcher);
+
+            case ASSERT_Cls:
+            return clsMatchers.Push(matcher);
+        
+            default: return false;
+        }
+    }
+
+    clearscope
+    Cl_ExpectMatcher ResolveMatcher(Cl_EAssertType type, Name id) const {
+        switch (type) {
+            case ASSERT_Bool:
+            for (let i=0; i<boolMatchers.Size(); i++)
+                if (boolMatchers[i].ID() == id) 
+                    return boolMatchers[i];
+            break;
+
+            case ASSERT_Num:
+            for (let i=0; i<5; i++)
+                if (numMatchers[i].ID() == id)
+                    return numMatchers[i];
+            break;
+
+            case ASSERT_Obj:
+            for (let i=0; i<objMatchers.Size(); i++)
+                if (objMatchers[i].ID() == id)
+                    return objMatchers[i];
+            break;
+
+            case ASSERT_Cls:
+            for (let i=0; i<clsMatchers.Size(); i++)
+                if (clsMatchers[i].ID() == id)
+                    return clsMatchers[i];
+            break;
+        }
+
+        return null;
+    }
+}

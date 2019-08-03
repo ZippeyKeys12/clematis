@@ -1,3 +1,4 @@
+// TODO: Use AssertSame
 class Cl_AssertNull:Cl_Assertion{
     Object Value;
 

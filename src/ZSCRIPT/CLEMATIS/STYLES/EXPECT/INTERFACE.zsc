@@ -1,0 +1,18 @@
+extend
+class Clematis {
+    Cl_ExpectBuilder ExpectBool(bool ref, String condition = "") {
+        return Cl_ExpectBuilder.CreateBool(ref, condition);
+    }
+
+    Cl_ExpectBuilder ExpectNum(double ref, String condition = "") {
+        return Cl_ExpectBuilder.CreateNum(ref, condition);
+    }
+
+    Cl_ExpectBuilder ExpectObj(Object ref, String condition = "") {
+        return Cl_ExpectBuilder.CreateObj(ref, condition);
+    }
+
+    Cl_ExpectBuilder ExpectCls(Class ref, String condition = "") {
+        return Cl_ExpectBuilder.CreateCls(ref, condition);
+    }
+}

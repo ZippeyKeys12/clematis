@@ -1,0 +1,29 @@
+class Cl_AssertIsA : Cl_Assertion{
+    Object Value;
+
+    Class ClassName;
+
+    static
+    Cl_Assertion Create(Object Value, Class ClassName, String ErrorMsg = ""){
+        let result = new('Cl_AssertIsA');
+        result.ClassName = ClassName;
+        result.Value = Value;
+
+        if(ErrorMsg=="")
+            result.ErrorMsg = "Object is not a "..ClassName;
+        else
+            result.ErrorMsg = String.Format(ErrorMsg, Value, ClassName);
+
+        return result;
+    }
+
+    override
+    bool Eval()
+    {return Value is ClassName;}
+}
+
+extend
+class Clematis{
+    Cl_Assertion AssertIsA(Object Value, Class ClassName, String ErrorMsg="")
+    {return Cl_AssertIsA.Create(Value, ClassName, ErrorMsg);}
+}

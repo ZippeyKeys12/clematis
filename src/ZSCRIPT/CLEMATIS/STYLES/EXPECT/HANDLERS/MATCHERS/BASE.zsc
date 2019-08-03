@@ -1,0 +1,7 @@
+class Cl_ExpectMatcher : Cl_ExpectHandler abstract {
+    virtual
+    Cl_EAssertType SecType() { return -1; }
+
+    virtual
+    Cl_Assertion Match(Cl_ExpectBuilder builder, String ErrorMsg = "") { return null; }
+}

@@ -1,0 +1,16 @@
+class Cl_EMatchInstance : Cl_ExpectMatcher {
+    override
+    Name ID()
+    { return 'instance'; }
+
+    override
+    Cl_Assertion Match(Cl_ExpectBuilder builder, String ErrorMsg) {
+        if (builder.secType != ASSERT_Cls)
+            Cl_Util.Log("Clematis", LOG_Error, "InstanceOf requires a class for its second arg");
+
+        if (builder.neg)
+            return Cl_AssertIsNotA.Create(builder.refObj, builder.secCls, ErrorMsg);
+        else
+            return Cl_AssertIsA.Create(builder.refObj, builder.secCls, ErrorMsg);
+    }
+}

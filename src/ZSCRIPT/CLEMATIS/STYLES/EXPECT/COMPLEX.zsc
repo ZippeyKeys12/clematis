@@ -1,0 +1,6 @@
+extend
+class Cl_ExpectBuilder {
+    Cl_Assertion nullPointer() {
+        return equal().thisObj(null);
+    }
+}

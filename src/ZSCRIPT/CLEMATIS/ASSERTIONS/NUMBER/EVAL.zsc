@@ -11,15 +11,17 @@ class Cl_AssertEval:Cl_Assertion{
         Result.Operator=Operator;
         Result.Val2=Val2;
         if(ErrorMsg==""){
-            if(Operator=="=" || Operator=="==" || Operator=="~=" || Operator=="~==")
+            if (Operator=="=" || Operator=="==")
                 Result.ErrorMsg = String.Format("%f does not equal %f", Val1, Val2);
-            else if(Operator=="<")
+            else if (Operator == "!=")
+                Result.ErrorMsg = String.Format("%f equals %f", Val1, Val2);
+            else if (Operator == "<")
                 Result.ErrorMsg = String.Format("%f was not less than %f", Val1, Val2);
-            else if(Operator==">")
+            else if (Operator==">")
                 Result.ErrorMsg = String.Format("%f was not greater than %f", Val1, Val2);
-            else if(Operator=="<=")
+            else if (Operator=="<=")
                 Result.ErrorMsg = String.Format("%f was not less than or equal to %f", Val1, Val2);
-            else if(Operator==">=")
+            else if (Operator==">=")
                 Result.ErrorMsg = String.Format("%f was not greater than or equal to %f", Val1, Val2);
         }else
             Result.ErrorMsg = String.Format(ErrorMsg, Val1, Val2);
@@ -30,6 +32,8 @@ class Cl_AssertEval:Cl_Assertion{
     bool Eval(){
         if(Operator=="=" || Operator=="==")
             return Val1==Val2;
+        else if (Operator == '!=')
+            return Val1 != Val2;
         else if(Operator=="<")
             return Val1<Val2;
         else if(Operator==">")

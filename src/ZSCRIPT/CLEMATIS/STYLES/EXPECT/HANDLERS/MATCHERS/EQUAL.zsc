@@ -1,0 +1,35 @@
+class Cl_EMatchEqual : Cl_ExpectMatcher {
+    override
+    Name ID()
+    { return '='; }
+
+    override
+    Cl_Assertion Match(Cl_ExpectBuilder builder, String ErrorMsg) {
+        if (builder.refType != builder.secType)
+            Cl_Util.Log("Clematis", LOG_Error, "Equal requires that both arguments are the same type");
+
+        let sym = "=";
+
+        if (builder.neg)
+            sym = '!=';
+
+        switch (builder.refType) {
+            case ASSERT_Bool:
+            return Cl_AssertEval.Create(builder.refBool, sym, builder.secBool, ErrorMsg);
+
+            case ASSERT_Num:
+            return Cl_AssertEval.Create(builder.refNum, sym, builder.secNum, ErrorMsg);
+
+            case ASSERT_Obj:
+            if (builder.neg)
+                return Cl_AssertDiff.Create(builder.refObj, builder.secObj, ErrorMsg);
+            else
+                return Cl_AssertSame.Create(builder.refObj, builder.secObj, ErrorMsg);
+
+            case ASSERT_Cls:
+            // TODO
+        
+            default: return null;
+        }
+    }
+}

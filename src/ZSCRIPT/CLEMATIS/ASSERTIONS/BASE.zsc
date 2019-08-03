@@ -1,3 +1,10 @@
+enum Cl_EAssertType {
+    ASSERT_Bool,
+    ASSERT_Num,
+    ASSERT_Obj,
+    ASSERT_Cls,
+}
+
 class Cl_Assertion abstract{
     String ErrorMsg;
 

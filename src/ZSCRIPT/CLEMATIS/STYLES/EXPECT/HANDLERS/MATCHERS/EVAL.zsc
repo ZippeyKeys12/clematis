@@ -1,0 +1,67 @@
+class Cl_EMatchLess : Cl_ExpectMatcher {
+    override
+    Name ID()
+    { return '<'; }
+
+    override
+    Cl_Assertion Match(Cl_ExpectBuilder builder, String ErrorMsg) {
+        if (builder.secType != ASSERT_Num)
+            Cl_Util.Log("Clematis", LOG_Error, "LessThan requires a number for its second arg");
+
+        if (builder.neg)
+            return Cl_AssertEval.Create(builder.refNum, ">=", builder.secNum, ErrorMsg);
+        else
+            return Cl_AssertEval.Create(builder.refNum, "<", builder.secNum, ErrorMsg);
+    }
+}
+
+class Cl_EMatchLessEqual : Cl_ExpectMatcher {
+    override
+    Name ID()
+    { return '<='; }
+
+    override
+    Cl_Assertion Match(Cl_ExpectBuilder builder, String ErrorMsg) {
+        if (builder.secType != ASSERT_Num)
+            Cl_Util.Log("Clematis", LOG_Error, "LessThanOrEqual requires a number for its second arg");
+
+        if (builder.neg)
+            return Cl_AssertEval.Create(builder.refNum, "<", builder.secNum, ErrorMsg);
+        else
+            return Cl_AssertEval.Create(builder.refNum, "<=", builder.secNum, ErrorMsg);
+    }
+}
+
+class Cl_EMatchGreater : Cl_ExpectMatcher {
+    override
+    Name ID()
+    { return '>'; }
+
+    override
+    Cl_Assertion Match(Cl_ExpectBuilder builder, String ErrorMsg) {
+        if (builder.secType != ASSERT_Num)
+            Cl_Util.Log("Clematis", LOG_Error, "GreaterThan requires a number for its second arg");
+
+        if (builder.neg)
+            return Cl_AssertEval.Create(builder.refNum, "<=", builder.secNum, ErrorMsg);
+        else
+            return Cl_AssertEval.Create(builder.refNum, ">", builder.secNum, ErrorMsg);
+    }
+}
+
+class Cl_EMatchGreaterEqual : Cl_ExpectMatcher {
+    override
+    Name ID()
+    { return '>='; }
+
+    override
+    Cl_Assertion Match(Cl_ExpectBuilder builder, String ErrorMsg) {
+        if (builder.secType != ASSERT_Num)
+            Cl_Util.Log("Clematis", LOG_Error, "GreaterThanOrEqual requires a number for its second arg");
+
+        if (builder.neg)
+            return Cl_AssertEval.Create(builder.refNum, "<", builder.secNum, ErrorMsg);
+        else
+            return Cl_AssertEval.Create(builder.refNum, ">=", builder.secNum, ErrorMsg);
+    }
+}

@@ -1,0 +1,28 @@
+class Cl_AssertDiff:Cl_Assertion{
+    Object Val1,
+           Val2;
+
+    static
+    Cl_Assertion Create(Object Val1, Object Val2, String ErrorMsg=""){
+        let ret = new('Cl_AssertDiff');
+        ret.Val1 = Val1;
+        ret.Val2 = Val2;
+
+        if(ErrorMsg=="")
+            ret.ErrorMsg = "Values are the same";
+        else
+            ret.ErrorMsg = String.Format(ErrorMsg, Val1, Val2);
+
+        return ret;
+    }
+
+    override
+    bool Eval()
+    { return Val1 != Val2; }
+}
+
+extend
+class Clematis{
+    Cl_Assertion AssertDiff(Object Val1, Object Val2, String ErrorMsg="")
+    {return Cl_AssertDiff.Create(Val1, Val2, ErrorMsg);}
+}
